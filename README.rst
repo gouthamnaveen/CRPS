@@ -6,7 +6,9 @@ The continuous ranked probability score is a negatively oriented score that is u
 
 References:
 [1] Matheson, J. E. & Winkler, R. L. Scoring Rules for Continuous Probability Distributions. Management Science 22, 1087–1096 (1976).
+
 [2] Hersbach, H. Decomposition of the Continuous Ranked Probability Score for Ensemble Prediction Systems. Wea. Forecasting 15, 559–570 (2000).
+
 [3] Ferro, C. A. T., Richardson, D. S. & Weigel, A. P. On the effect of ensemble size on the discrete and continuous ranked probability scores. Meteorological Applications 15, 19–24 (2008).
 
 Installation
@@ -41,7 +43,7 @@ Attributes
 Empirical cumulative distribution function (`CDF`_) of the forecasts (y). F(y) in the crps equation.
    
 **cdf_ob**:
-CDF (`heaviside step function`_) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. F:sub:`o`(y) in the crps equation.
+CDF (`heaviside step function`_) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. F:sub:`o`\(y) in the crps equation.
     
 **delta_fc**:
 dy term in the crps equation.
