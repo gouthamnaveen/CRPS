@@ -50,19 +50,17 @@ It is the integral of the squared difference between the CDF of the forecasts an
 
 ![crps](http://www.sciweavers.org/tex2img.php?eq=crps%20%3D%20%20%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20%5BF%28y%29%20-%20F_%7Bo%7D%28y%29%5D%5E2%20dy%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
-.. math:: crps = \int\limits_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy
-
 **fcrps**: Fair-Continuous Ranked Probability Score
 It is the crps computed assuming an infinite ensemble size.
 
-.. math:: fcrps = crps - \int_{-\infty}^{\infty} [F(y) (1 - F(y))/(m-1)] dy
+![fcrps](http://www.sciweavers.org/tex2img.php?eq=fcrps%20%3D%20crps%20-%20%20%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20%5BF%28y%29%20%281%20-%20F%28y%29%29%2F%28m-1%29%5D%20dy&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
 where m is the current ensemble size (i.e., len(ensemble_members))
 
 **acrps**: Adjusted-Continuous Ranked Probability Score
 It is the crps computed assuming an ensemble size of M.
 
-.. math:: acrps = crps - \int_{-\infty}^{\infty} [(1 - m/M) F(y) (1 - F(y))/(m-1)] dy
+![acrps](http://www.sciweavers.org/tex2img.php?eq=acrps%20%3D%20crps%20-%20%20%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20%5B%281%20-%20m%2FM%29%20F%28y%29%20%281%20-%20F%28y%29%29%2F%28m-1%29%5D%20dy&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
 where M is the adjusted_ensemble_size
 
