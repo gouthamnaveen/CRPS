@@ -47,21 +47,22 @@ dy term in the crps equation.
     
 **crps**: Continuous Ranked Probability Score
 It is the integral of the squared difference between the CDF of the forecasts and the observation.
-
+```sh
 ![crps](crps.jpg)
+```
 
 **fcrps**: Fair-Continuous Ranked Probability Score
 It is the crps computed assuming an infinite ensemble size.
-
+```sh
 ![fcrps](fcrps.jpg)
-
+```
 where m is the current ensemble size (i.e., len(ensemble_members))
 
 **acrps**: Adjusted-Continuous Ranked Probability Score
 It is the crps computed assuming an ensemble size of M.
-
+```sh
 ![acrps](acrps.jpg)
-
+```
 where M is the adjusted_ensemble_size
 
 ## _Demonstration:_
