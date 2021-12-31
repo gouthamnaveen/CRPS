@@ -51,25 +51,19 @@ dy term in the crps equation.
 **crps**: Continuous Ranked Probability Score
 It is the integral of the squared difference between the CDF of the forecasts and the observation.
 
-.. math:: 
-
-crps = \int\limits_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy
+.. math:: crps = \int_{-\infty}^{\infty} [F(y) - F_{e}(y)]^2 dy
 
 **fcrps**: Fair-Continuous Ranked Probability Score
 It is the crps computed assuming an infinite ensemble size.
 
-.. math:: 
-
-fcrps = crps - \int_{-\infty}^{\infty} [F(y) (1 - F(y))/(m-1)] dy
+.. math:: fcrps = crps - \int_{-\infty}^{\infty} [F(y) (1 - F(y))/(m-1)] dy
 
 where m is the current ensemble size (i.e., len(ensemble_members))
 
 **acrps**: Adjusted-Continuous Ranked Probability Score
 It is the crps computed assuming an ensemble size of M.
 
-.. math:: 
-
-acrps = crps - \int_{-\infty}^{\infty} [(1 - m/M) F(y) (1 - F(y))/(m-1)] dy
+.. math:: acrps = crps - \int_{-\infty}^{\infty} [(1 - m/M) F(y) (1 - F(y))/(m-1)] dy
 
 where M is the adjusted_ensemble_size
 
@@ -80,11 +74,13 @@ where M is the adjusted_ensemble_size
 Demonstration
 -------------
 ``import numpy as np``
+
 ``import continuous-ranked-probability-score.CRPS as pscore``
 
 Example 1
-``|In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()``
-``|Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)``
+``In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()``
+
+``Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)``
 
 Example 2
 ``|In [2]: crps,fcrps,acrps = pscore(np.random.uniform(1.2,7,100),8.3,50).compute()``
