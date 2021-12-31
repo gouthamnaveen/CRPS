@@ -48,7 +48,7 @@ dy term in the crps equation.
 **crps**: Continuous Ranked Probability Score
 It is the integral of the squared difference between the CDF of the forecasts and the observation.
 
-![equation](<img src="http://www.sciweavers.org/tex2img.php?eq=%20%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20%5BF%28y%29%20-%20F_%7Bo%7D%28y%29%5D%5E2%20dy%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt=" \int_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy " width="183" height="49" />)
+![crps](http://www.sciweavers.org/tex2img.php?eq=crps%20%3D%20%20%5Cint_%7B-%5Cinfty%7D%5E%7B%5Cinfty%7D%20%5BF%28y%29%20-%20F_%7Bo%7D%28y%29%5D%5E2%20dy%20&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
 .. math:: crps = \int\limits_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy
 
