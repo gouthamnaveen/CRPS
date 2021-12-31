@@ -15,47 +15,47 @@ Installation
     
 Parameters
 ----------
-*ensemble_members*: numpy.ndarray
+**ensemble_members**: numpy.ndarray
 The predicted ensemble members. They will be sorted in ascending order automatically.
 Ex: np.array([2.1,3.5,4.7,1.2,1.3,5.2,5.3,4.2,3.1,1.7])
 
-*observation*: float
+**observation**: float
 The observed scalar.
 Ex: 5.4
     
-*adjusted_ensemble_size*: int, optional
+**adjusted_ensemble_size**: int, optional
 The size the ensemble needs to be adjusted to before computing the Adjusted Continuous Ranked Probability Score. The default is 200. 
-**Note**: The crps becomes equal to acrps when adjusted_ensemble_size equals the length of the ensemble_members.
+*Note*: The crps becomes equal to acrps when adjusted_ensemble_size equals the length of the ensemble_members.
 
 Methods
 -------
-*compute()*:
+**compute()**:
 Computes the continuous ranked probability score (crps), the fair-crps (fcrps), and the adjusted-crps (acrps).
 
-**Returns**:
+*Returns*:
 crps,fcrps,acrps
 
 Attributes
 ----------
-*cdf_fc*: 
+**cdf_fc**: 
 Empirical cumulative distribution function (`CDF`_) of the forecasts (y). F(y) in the crps equation.
    
-*cdf_ob*:
+**cdf_ob**:
 CDF (`heaviside step function`_) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. :math:`F_{o}(y)` in the crps equation.
     
-*delta_fc*:
+**delta_fc**:
 dy term in the crps equation.
     
-*crps*: Continuous Ranked Probability Score
+**crps**: Continuous Ranked Probability Score
 It is the integral of the squared difference between the CDF of the forecasts and the observation.
 .. math:: crps = \int\limits_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy
 
-*fcrps*: Fair-Continuous Ranked Probability Score
+**fcrps**: Fair-Continuous Ranked Probability Score
 It is the crps computed assuming an infinite ensemble size.
 .. math:: fcrps = crps - \int_{-\infty}^{\infty} [F(y) (1 - F(y))/(m-1)] dy
 where m is the current ensemble size (i.e., len(ensemble_members))
 
-*acrps*: Adjusted-Continuous Ranked Probability Score
+**acrps**: Adjusted-Continuous Ranked Probability Score
 It is the crps computed assuming an ensemble size of M.
 .. math:: acrps = crps - \int_{-\infty}^{\infty} [(1 - m/M) F(y) (1 - F(y))/(m-1)] dy
 where M is the adjusted_ensemble_size
