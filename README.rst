@@ -43,26 +43,32 @@ Attributes
 Empirical cumulative distribution function (`CDF`_) of the forecasts (y). F(y) in the crps equation.
    
 **cdf_ob**:
-CDF (`heaviside step function`_) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. F:sub:`o`\(y) in the crps equation.
+CDF (`heaviside step function`_) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. F\ :sub:`o` (y) in the crps equation.
     
 **delta_fc**:
 dy term in the crps equation.
     
 **crps**: Continuous Ranked Probability Score
 It is the integral of the squared difference between the CDF of the forecasts and the observation.
+
 .. math:: 
+
 crps = \int\limits_{-\infty}^{\infty} [F(y) - F_{o}(y)]^2 dy
 
 **fcrps**: Fair-Continuous Ranked Probability Score
 It is the crps computed assuming an infinite ensemble size.
+
 .. math:: 
+
 fcrps = crps - \int_{-\infty}^{\infty} [F(y) (1 - F(y))/(m-1)] dy
 
 where m is the current ensemble size (i.e., len(ensemble_members))
 
 **acrps**: Adjusted-Continuous Ranked Probability Score
 It is the crps computed assuming an ensemble size of M.
+
 .. math:: 
+
 acrps = crps - \int_{-\infty}^{\infty} [(1 - m/M) F(y) (1 - F(y))/(m-1)] dy
 
 where M is the adjusted_ensemble_size
@@ -77,16 +83,16 @@ Demonstration
 ``import continuous-ranked-probability-score.CRPS as pscore``
 
 Example 1
-``In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()``
-``Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)``
+``|In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()``
+``|Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)``
 
 Example 2
-``In [2]: crps,fcrps,acrps = pscore(np.random.uniform(1.2,7,100),8.3,50).compute()``
-``In [3]: crps``
-``Out[3]: 3.11890267263096``
-``In [4]: fcrps``
-``Out[4]: 3.109573704801023``
-``In [5]: acrps``
-``Out[5]: 3.129164537243891``
+``|In [2]: crps,fcrps,acrps = pscore(np.random.uniform(1.2,7,100),8.3,50).compute()``
+``|In [3]: crps``
+``|Out[3]: 3.11890267263096``
+``|In [4]: fcrps``
+``|Out[4]: 3.109573704801023``
+``|In [5]: acrps``
+``|Out[5]: 3.129164537243891``
 
 
