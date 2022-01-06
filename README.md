@@ -123,7 +123,8 @@ In [6]: plt.plot(ps.fc,ps.cdf_fc,'-r',label='fc')
    ...: plt.plot(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,'-b')
    ...: plt.fill_between(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,label='crps')
    ...: plt.legend()
-Out[6]: 
-![crps illustration](crps_illustration.png)
-```
+Out[6]:
+``` 
+
+![illustration](crps_illustration.png)
 
