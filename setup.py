@@ -3,14 +3,14 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 PACKAGE_NAME = 'CRPS'
 AUTHOR = 'Naveen Goutham'
 AUTHOR_EMAIL = 'naveen.goutham@outlook.com'
 URL = 'https://github.com/garovent/CRPS'
 
 LICENSE = 'Apache License 2.0'
-DESCRIPTION = 'A package to compute the Continuous Ranked Probability Score (CRPS), the Fair-CRPS, and the Adjusted-CRPS. To read more: https://github.com/garovent/CRPS'
+DESCRIPTION = 'A package to compute the Continuous Ranked Probability Score (CRPS), the Fair-CRPS, and the Adjusted-CRPS. Read the documentation at https://github.com/garovent/CRPS'
 LONG_DESCRIPTION = (HERE / "README.md").read_text()
 LONG_DESC_TYPE = "text/markdown"
 

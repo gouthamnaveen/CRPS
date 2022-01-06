@@ -2,7 +2,9 @@
 
 A package to compute the continuous ranked probability score (crps) (Matheson and Winkler, 1976; Hersbach, 2000), the fair-crps (fcrps) (Ferro et al., 2008), and the adjusted-crps (acrps) (Ferro et al., 2008) given an ensemble prediction and an observation.
     
-The CRPS is a negatively oriented score that is used to compare the empirical distribution of an ensemble prediction to a scalar observation.
+The CRPS is a negatively oriented score that is used to compare the empirical distribution of an ensemble prediction to a scalar observation. 
+
+Read documentation at [https://github.com/garovent/CRPS](https://github.com/garovent/CRPS)
 
 _References_:
 
@@ -106,5 +108,22 @@ In [4]: fcrps
 Out[4]: 3.109573704801023
 In [5]: acrps
 Out[5]: 3.129164537243891
+```
+
+Example - 3
+```sh
+In [1]: fc = np.random.uniform(4.6,5.3,100)
+In [2]: ob = 4.9
+In [3]: ps = pscore(fc,ob)
+In [4]: ps.compute()
+Out[4]: (0.05767439558002044, 0.05651649413199454, 0.05709544485600749)
+In [5]: import matplotlib.pyplot as plt
+In [6]: plt.plot(ps.fc,ps.cdf_fc,'-r',label='fc')
+   ...: plt.plot(ps.fc,ps.cdf_ob,'-k',label='ob')
+   ...: plt.plot(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,'-b')
+   ...: plt.fill_between(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,label='crps')
+   ...: plt.legend()
+Out[6]: 
+![crps illustration](crps_illustration.png)
 ```
 
