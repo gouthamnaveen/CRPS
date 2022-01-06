@@ -178,7 +178,7 @@ class CRPS:
         
         '''
         self.__fix_ends()
-        self.cdf_ob = np.array([self.fc >= self.ob])
+        self.cdf_ob = (self.fc >= self.ob)
         return None
     
     def __delta(self):
