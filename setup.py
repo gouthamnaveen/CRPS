@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '1.0.3'
+VERSION = '2.0.0'
 PACKAGE_NAME = 'CRPS'
 AUTHOR = 'Naveen Goutham'
 AUTHOR_EMAIL = 'naveen.goutham@outlook.com'

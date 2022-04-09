@@ -55,7 +55,7 @@ author = 'Naveen Goutham'
 # built documents.
 #
 # The short X.Y version.
-version = 1.0.3
+version = 2.0.0
 # The full version, including alpha/beta/rc tags.
 release = '2022'
 
