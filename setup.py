@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 HERE = pathlib.Path(__file__).parent
 
-VERSION = '1.0.2'
+VERSION = '1.0.3'
 PACKAGE_NAME = 'CRPS'
 AUTHOR = 'Naveen Goutham'
 AUTHOR_EMAIL = 'naveen.goutham@outlook.com'
@@ -27,5 +27,6 @@ setup(name=PACKAGE_NAME,
       author_email=AUTHOR_EMAIL,
       url=URL,
       install_requires=INSTALL_REQUIRES,
+      keywords=['crps','continuous ranked probability score','fair crps','adjusted crps','proper score','probability score','ensemble forecast','python'],
       packages=find_packages()
       )
