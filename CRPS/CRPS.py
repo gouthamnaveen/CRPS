@@ -113,8 +113,9 @@ class CRPS:
             None
             
         '''
-        self.fc = np.sort(ensemble_members)
+        self.fc = np.sort(np.unique(ensemble_members))
         self.ob = observation
+        self.m = len(self.fc)
         self.M = int(adjusted_ensemble_size)
         self.cdf_fc = None
         self.cdf_ob = None
@@ -126,90 +127,60 @@ class CRPS:
     def __str__(self):
         "Kindly refer to the __doc__ method for documentation. i.e. print(CRPS.__doc__)."
             
-    def __build_cdf_fc(self):
-        '''
-        This method builds the empirical cumulative distribution function (cdf) for any given ensemble size.
-        
-        Returns:
-            None
-        
-        Attributes:
-            cdf_fc
-        
-        '''
-        mem_fc = len(self.fc)
-        cdf_fc = []
-        cdf_fc_in = 0
-        k = 0
-        for k in range(mem_fc):
-            val = (1/mem_fc) + cdf_fc_in
-            cdf_fc_in = val
-            cdf_fc.append(val)
-        cdf_fc = np.array(cdf_fc)
-        self.cdf_fc = cdf_fc
-        return None
-        
-    def __fix_ends(self):
-        '''
-        This method checks if the observed value is within the ensemble distribution. If the observation falls outside of the ensemble distribution, this method adjusts the tails of the distribution to include the observation.
-        
-        Returns:
-            None
-        
-        '''
-        self.__build_cdf_fc()
-        if self.fc[-1] < self.ob:
-            self.fc = np.array(list(self.fc) + list(np.linspace(self.fc[-1],self.ob,5)), dtype=object)
-            self.cdf_fc = np.array(list(self.cdf_fc) + list(np.ones(5)), dtype=object)
-        if self.fc[0] > self.ob:
-            self.fc = np.array(list(np.linspace(self.ob,self.fc[0],5)) + list(self.fc), dtype=object)
-            self.cdf_fc = np.array(list(np.zeros(5)) + list(self.cdf_fc), dtype=object)
-        return None
-    
-    def __build_cdf_ob(self):
-        '''
-        This method builds the cumulative distribution function (cdf) for the observation as a heaviside step function.
-        
-        Returns:
-            None
-        
-        Attributes:
-            cdf_ob   
-        
-        '''
-        self.__fix_ends()
-        self.cdf_ob = (self.fc >= self.ob)
-        return None
-    
-    def __delta(self):
-        '''
-        This method computes delta (i.e., difference) between the adjacent ensemble members.
-
-        Returns:
-            None
-
-        Attributes:
-            delta_fc
-            
-        '''
-        self.delta_fc = np.array([self.fc[m+1] - self.fc[m] for m in range(len(self.fc)-1)] + list(np.zeros(1)), dtype=object)
-        return None
-    
     def compute(self):
         '''
-        This method computes the continuous ranked probability score (crps), the fair-crps (fcrps), and the adjusted-crps (acrps).
 
-        Returns:
-            crps, fcrps, acrps
-
-        Attributes:
-            crps, fcrps, acrps
-
+        Returns
+        -------
+        None.
         '''
-        self.__build_cdf_ob()
-        self.__delta()
+        if self.ob < self.fc[0]:
+            self.cdf_fc = np.linspace(0,(self.m - 1)/self.m,self.m)
+            self.cdf_ob = np.ones(self.m)
+            all_mem = np.array([self.ob] + list(self.fc), dtype = object)
+            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object)
+            
+        elif self.ob > self.fc[-1]:
+            self.cdf_fc = np.linspace(1/self.m,1,self.m)
+            self.cdf_ob = np.zeros(self.m)
+            all_mem = np.array(list(self.fc) + [self.ob], dtype = object)
+            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object) 
+
+        elif self.ob in self.fc:
+            self.cdf_fc = np.linspace(1/self.m,1,self.m)
+            self.cdf_ob = (self.fc >= self.ob)
+            all_mem = self.fc
+            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)] + list(np.zeros(1)), dtype=object) 
+
+        else:
+            cdf_fc = []
+            cdf_ob = []
+            delta_fc = []
+            for f in range(len(self.fc)-1):
+                if (self.fc[f] < self.ob) and (self.fc[f+1] < self.ob):
+                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_ob.append(0)
+                    delta_fc.append(self.fc[f+1] - self.fc[f])
+                elif (self.fc[f] < self.ob) and (self.fc[f+1] > self.ob):
+                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_ob.append(0)
+                    cdf_ob.append(1)
+                    delta_fc.append(self.ob - self.fc[f])
+                    delta_fc.append(self.fc[f+1] - self.ob)
+                else:
+                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_ob.append(1)
+                    delta_fc.append(self.fc[f+1] - self.fc[f])
+            self.cdf_fc = np.array(cdf_fc)
+            self.cdf_ob = np.array(cdf_ob)
+            self.delta_fc = np.array(delta_fc)
+        
         self.crps = np.sum(np.array((self.cdf_fc - self.cdf_ob) ** 2)*self.delta_fc)
-        m = len(self.cdf_fc)
-        self.fcrps = self.crps - np.sum(np.array(((self.cdf_fc * (1 - self.cdf_fc))/(m-1))*self.delta_fc))
-        self.acrps = self.crps - np.sum(np.array((((1 - (m/self.M)) * self.cdf_fc * (1 - self.cdf_fc))/(m-1))*self.delta_fc))
+        if self.m == 1:
+            self.fcrps = self.acrps = 'Not defined'
+        else:
+            self.fcrps = self.crps - np.sum(np.array(((self.cdf_fc * (1 - self.cdf_fc))/(self.m-1))*self.delta_fc))
+            self.acrps = self.crps - np.sum(np.array((((1 - (self.m/self.M)) * self.cdf_fc * (1 - self.cdf_fc))/(self.m-1))*self.delta_fc))
         return self.crps, self.fcrps, self.acrps
+    
