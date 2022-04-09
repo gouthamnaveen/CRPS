@@ -109,8 +109,9 @@ class CRPS:
                 The default is 200. 
                 Note: The crps becomes equal to acrps when adjusted_ensemble_size equals the length of the ensemble_members.
         
-        Returns:
-            None
+        Returns
+        -------
+        None
             
         '''
         self.fc = np.sort(np.unique(ensemble_members))
@@ -129,10 +130,10 @@ class CRPS:
             
     def compute(self):
         '''
-
         Returns
         -------
-        None.
+        crps, fair-crps, adjusted-crps
+        
         '''
         if self.ob < self.fc[0]:
             self.cdf_fc = np.linspace(0,(self.m - 1)/self.m,self.m)
