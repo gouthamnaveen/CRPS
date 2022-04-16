@@ -36,7 +36,7 @@ class CRPS:
     
     ----------
     
-    Methods:
+    Method(s):
             
         compute():
             Computes the continuous ranked probability score (crps), the fair-crps (fcrps), and the adjusted-crps (acrps).
@@ -44,15 +44,6 @@ class CRPS:
     ----------
             
     Attributes:
-        cdf_fc: 
-            Empirical cumulative distribution function (cdf) of the forecasts (y). F(y) in the crps equation.
-        
-        cdf_ob:
-            CDF (heaviside step function) for the observation (o). 
-        
-        delta_fc:
-            dy term in the crps equation.
-        
         crps: Continuous Ranked Probability Score
             It is the integral of the squared difference between the CDF of the forecast ensemble and the observation.
             
@@ -78,21 +69,22 @@ class CRPS:
     ----------
     
     Demonstration:
-    	import numpy as np
+    
+    import numpy as np
 	import CRPS.CRPS as pscore
 
 	Example - 1:
-	In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()
-	Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)
+	In [1]: pscore(np.arange(1,5),3.5).compute()
+	Out[1]: (0.625, 0.4166666666666667, 0.42083333333333334)
 
 	Example - 2:
-	In [2]: crps,fcrps,acrps = pscore(np.random.uniform(1.2,7,100),8.3,50).compute()
+	In [2]: crps,fcrps,acrps = pscore(np.arange(1,11),8.3,50).compute()
 	In [3]: crps
-	Out[3]: 3.11890267263096
+	Out[3]: 1.6300000000000003
 	In [4]: fcrps
-	Out[4]: 3.109573704801023
+	Out[4]: 1.446666666666667
 	In [5]: acrps
-	Out[5]: 3.129164537243891
+	Out[5]: 1.4833333333333336
         
     '''
     def __init__(self,ensemble_members,observation,adjusted_ensemble_size=200):
@@ -116,11 +108,11 @@ class CRPS:
         '''
         self.fc = np.sort(np.unique(ensemble_members))
         self.ob = observation
-        self.m = len(self.fc)
+        self.__m = len(self.fc)
         self.M = int(adjusted_ensemble_size)
-        self.cdf_fc = None
-        self.cdf_ob = None
-        self.delta_fc = None
+        self.__cdf_fc = None
+        self.__cdf_ob = None
+        self.__delta_fc = None
         self.crps = None
         self.fcrps = None
         self.acrps = None
@@ -136,22 +128,22 @@ class CRPS:
         
         '''
         if self.ob < self.fc[0]:
-            self.cdf_fc = np.linspace(0,(self.m - 1)/self.m,self.m)
-            self.cdf_ob = np.ones(self.m)
+            self.__cdf_fc = np.linspace(0,(self.__m - 1)/self.__m,self.__m)
+            self.__cdf_ob = np.ones(self.__m)
             all_mem = np.array([self.ob] + list(self.fc), dtype = object)
-            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object)
+            self.__delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object)
             
         elif self.ob > self.fc[-1]:
-            self.cdf_fc = np.linspace(1/self.m,1,self.m)
-            self.cdf_ob = np.zeros(self.m)
+            self.__cdf_fc = np.linspace(1/self.__m,1,self.__m)
+            self.__cdf_ob = np.zeros(self.__m)
             all_mem = np.array(list(self.fc) + [self.ob], dtype = object)
-            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object) 
+            self.__delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)], dtype=object) 
 
         elif self.ob in self.fc:
-            self.cdf_fc = np.linspace(1/self.m,1,self.m)
-            self.cdf_ob = (self.fc >= self.ob)
+            self.__cdf_fc = np.linspace(1/self.__m,1,self.__m)
+            self.__cdf_ob = (self.fc >= self.ob)
             all_mem = self.fc
-            self.delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)] + list(np.zeros(1)), dtype=object) 
+            self.__delta_fc = np.array([all_mem[n+1] - all_mem[n] for n in range(len(all_mem)-1)] + list(np.zeros(1)), dtype=object) 
 
         else:
             cdf_fc = []
@@ -159,29 +151,29 @@ class CRPS:
             delta_fc = []
             for f in range(len(self.fc)-1):
                 if (self.fc[f] < self.ob) and (self.fc[f+1] < self.ob):
-                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_fc.append((f+1)*1/self.__m)
                     cdf_ob.append(0)
                     delta_fc.append(self.fc[f+1] - self.fc[f])
                 elif (self.fc[f] < self.ob) and (self.fc[f+1] > self.ob):
-                    cdf_fc.append((f+1)*1/self.m)
-                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_fc.append((f+1)*1/self.__m)
+                    cdf_fc.append((f+1)*1/self.__m)
                     cdf_ob.append(0)
                     cdf_ob.append(1)
                     delta_fc.append(self.ob - self.fc[f])
                     delta_fc.append(self.fc[f+1] - self.ob)
                 else:
-                    cdf_fc.append((f+1)*1/self.m)
+                    cdf_fc.append((f+1)*1/self.__m)
                     cdf_ob.append(1)
                     delta_fc.append(self.fc[f+1] - self.fc[f])
-            self.cdf_fc = np.array(cdf_fc)
-            self.cdf_ob = np.array(cdf_ob)
-            self.delta_fc = np.array(delta_fc)
+            self.__cdf_fc = np.array(cdf_fc)
+            self.__cdf_ob = np.array(cdf_ob)
+            self.__delta_fc = np.array(delta_fc)
         
-        self.crps = np.sum(np.array((self.cdf_fc - self.cdf_ob) ** 2)*self.delta_fc)
-        if self.m == 1:
+        self.crps = np.sum(np.array((self.__cdf_fc - self.__cdf_ob) ** 2)*self.__delta_fc)
+        if self.__m == 1:
             self.fcrps = self.acrps = 'Not defined'
         else:
-            self.fcrps = self.crps - np.sum(np.array(((self.cdf_fc * (1 - self.cdf_fc))/(self.m-1))*self.delta_fc))
-            self.acrps = self.crps - np.sum(np.array((((1 - (self.m/self.M)) * self.cdf_fc * (1 - self.cdf_fc))/(self.m-1))*self.delta_fc))
+            self.fcrps = self.crps - np.sum(np.array(((self.__cdf_fc * (1 - self.__cdf_fc))/(self.__m-1))*self.__delta_fc))
+            self.acrps = self.crps - np.sum(np.array((((1 - (self.__m/self.M)) * self.__cdf_fc * (1 - self.__cdf_fc))/(self.__m-1))*self.__delta_fc))
         return self.crps, self.fcrps, self.acrps
     
