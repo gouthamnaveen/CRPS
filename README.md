@@ -40,7 +40,7 @@ The size the ensemble needs to be adjusted to before computing the Adjusted Cont
 
 _Note_: The crps becomes equal to acrps when adjusted_ensemble_size equals the length of the ensemble_members.
 
-## _Methods:_
+## _Method(s):_
 
 **compute()**:
 
@@ -51,18 +51,6 @@ _Returns_:
 crps,fcrps,acrps
 
 ## _Attributes:_
-
-**cdf_fc**: 
-
-Empirical cumulative distribution function ([CDF](https://en.wikipedia.org/wiki/Cumulative_distribution_function)) of the forecasts (y). F(y) in the crps equation.
-   
-**cdf_ob**:
-
-CDF ([heaviside step function](https://en.wikipedia.org/wiki/Heaviside_step_function)) for the observation (o). It takes 0 for values is less than the observation, and 1 otherwise. F<sub>o</sub>(y) in the crps equation.
-    
-**delta_fc**:
-
-dy term in the crps equation.
     
 **crps**: Continuous Ranked Probability Score
 
@@ -93,38 +81,20 @@ import numpy as np
 import CRPS.CRPS as pscore
 ```
 
-Example - 1
+Example - 1:
 ```sh
-In [1]: pscore(np.random.uniform(2,5,50),3.5).compute()
-Out[1]: (0.24374216742963792, 0.2332762342590258, 0.23589271755167882)
+In [1]: pscore(np.arange(1,5),3.5).compute()
+Out[1]: (0.625, 0.4166666666666667, 0.42083333333333334)
 ```
 
-Example - 2
+Example - 2:
 ```sh
-In [2]: crps,fcrps,acrps = pscore(np.random.uniform(1.2,7,100),8.3,50).compute()
+In [2]: crps,fcrps,acrps = pscore(np.arange(1,11),8.3,50).compute()
 In [3]: crps
-Out[3]: 3.11890267263096
+Out[3]: 1.6300000000000003
 In [4]: fcrps
-Out[4]: 3.109573704801023
+Out[4]: 1.446666666666667
 In [5]: acrps
-Out[5]: 3.129164537243891
+Out[5]: 1.4833333333333336
 ```
-
-Example - 3
-```sh
-In [1]: fc = np.random.uniform(4.6,5.3,100)
-In [2]: ob = 4.9
-In [3]: ps = pscore(fc,ob)
-In [4]: ps.compute()
-Out[4]: (0.05767439558002044, 0.05651649413199454, 0.05709544485600749)
-In [5]: import matplotlib.pyplot as plt
-In [6]: plt.plot(ps.fc,ps.cdf_fc,'-r',label='fc')
-   ...: plt.plot(ps.fc,ps.cdf_ob,'-k',label='ob')
-   ...: plt.plot(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,'-b')
-   ...: plt.fill_between(ps.fc,(ps.cdf_fc-ps.cdf_ob)**2,label='crps')
-   ...: plt.legend()
-Out[6]:
-``` 
-
-![illustration](crps_illustration.png)
 
