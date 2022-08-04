@@ -4,8 +4,6 @@ A package to compute the continuous ranked probability score (crps) (Matheson an
     
 The CRPS is a negatively oriented score that is used to compare the empirical distribution of an ensemble prediction to a scalar observation. 
 
-Read documentation at [https://github.com/garovent/CRPS](https://github.com/garovent/CRPS)
-
 _References_:
 
 [1] Matheson, J. E. & Winkler, R. L. Scoring Rules for Continuous Probability Distributions. Management Science 22, 1087–1096 (1976).
