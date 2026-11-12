@@ -48,6 +48,8 @@ _Returns_:
 
 crps,fcrps,acrps
 
+If the observation or any ensemble member is NaN, all three returned scores are NaN.
+
 ## _Attributes:_
     
 **crps**: Continuous Ranked Probability Score

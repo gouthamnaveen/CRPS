@@ -127,7 +127,7 @@ class CRPS:
         crps, fair-crps, adjusted-crps
         
         '''
-        if (self.ob is not np.nan) and (not np.isnan(self.fc).any()):
+        if (not np.isnan(self.ob)) and (not np.isnan(self.fc).any()):
             if self.ob < self.fc[0]:
                 self.__cdf_fc = np.linspace(0,(self.__m - 1)/self.__m,self.__m)
                 self.__cdf_ob = np.ones(self.__m)
